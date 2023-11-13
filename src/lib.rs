@@ -319,7 +319,6 @@ pub mod reexports {
     pub use serde;
     pub use serde_json;
     pub use thiserror;
-    pub use zeroize;
 }
 
 mod error;
@@ -403,6 +402,7 @@ a3t0cyDKinOY7JGIwh8DWAa4pfEzgg56yLcilYSSohXeaQV0nR8+rm9J8GUYXjPK
 -----END PUBLIC KEY-----
     ";
 
+    #[cfg(feature = "hmac")]
     #[test]
     fn hs384() {
         let key = HS384Key::from_bytes(b"your-256-bit-secret").with_key_id("my-key-id");
@@ -417,6 +417,7 @@ a3t0cyDKinOY7JGIwh8DWAa4pfEzgg56yLcilYSSohXeaQV0nR8+rm9J8GUYXjPK
             .unwrap();
     }
 
+    #[cfg(feature = "rsa")]
     #[test]
     fn rs256() {
         let key_pair = RS256KeyPair::from_pem(RSA_KP_PEM).unwrap();
@@ -429,6 +430,7 @@ a3t0cyDKinOY7JGIwh8DWAa4pfEzgg56yLcilYSSohXeaQV0nR8+rm9J8GUYXjPK
         let _e = Base64::decode_to_vec(hex_e, None).unwrap();
     }
 
+    #[cfg(feature = "rsa")]
     #[test]
     fn ps384() {
         let key_pair = PS384KeyPair::generate(2048).unwrap();
@@ -440,6 +442,7 @@ a3t0cyDKinOY7JGIwh8DWAa4pfEzgg56yLcilYSSohXeaQV0nR8+rm9J8GUYXjPK
             .unwrap();
     }
 
+    #[cfg(feature = "es256")]
     #[test]
     fn es256() {
         let key_pair = ES256KeyPair::generate();
@@ -451,6 +454,7 @@ a3t0cyDKinOY7JGIwh8DWAa4pfEzgg56yLcilYSSohXeaQV0nR8+rm9J8GUYXjPK
             .unwrap();
     }
 
+    #[cfg(feature = "es256")]
     #[test]
     fn es384() {
         let key_pair = ES384KeyPair::generate();
@@ -462,6 +466,7 @@ a3t0cyDKinOY7JGIwh8DWAa4pfEzgg56yLcilYSSohXeaQV0nR8+rm9J8GUYXjPK
             .unwrap();
     }
 
+    #[cfg(feature = "es256k")]
     #[test]
     fn es256k() {
         let key_pair = ES256kKeyPair::generate();
@@ -473,6 +478,7 @@ a3t0cyDKinOY7JGIwh8DWAa4pfEzgg56yLcilYSSohXeaQV0nR8+rm9J8GUYXjPK
             .unwrap();
     }
 
+    #[cfg(feature = "eddsa")]
     #[test]
     fn ed25519() {
         #[derive(Serialize, Deserialize)]
@@ -498,6 +504,7 @@ a3t0cyDKinOY7JGIwh8DWAa4pfEzgg56yLcilYSSohXeaQV0nR8+rm9J8GUYXjPK
         assert!(claims.custom.is_custom);
     }
 
+    #[cfg(feature = "hmac")]
     #[test]
     fn ed25519_der() {
         let key_pair = Ed25519KeyPair::generate();
@@ -506,6 +513,7 @@ a3t0cyDKinOY7JGIwh8DWAa4pfEzgg56yLcilYSSohXeaQV0nR8+rm9J8GUYXjPK
         assert_eq!(key_pair.to_bytes(), key_pair2.to_bytes());
     }
 
+    #[cfg(feature = "hmac")]
     #[test]
     fn require_nonce() {
         let key = HS256Key::generate();
@@ -521,6 +529,7 @@ a3t0cyDKinOY7JGIwh8DWAa4pfEzgg56yLcilYSSohXeaQV0nR8+rm9J8GUYXjPK
             .unwrap();
     }
 
+    #[cfg(feature = "eddsa")]
     #[test]
     fn eddsa_pem() {
         let sk_pem = "-----BEGIN PRIVATE KEY-----
@@ -533,6 +542,7 @@ MCowBQYDK2VwAyEAyrRjJfTnhMcW5igzYvPirFW5eUgMdKeClGzQhd4qw+Y=
         assert_eq!(kp.public_key().to_pem(), pk_pem);
     }
 
+    #[cfg(feature = "eddsa")]
     #[test]
     fn key_metadata() {
         let mut key_pair = Ed25519KeyPair::generate();
@@ -556,6 +566,7 @@ MCowBQYDK2VwAyEAyrRjJfTnhMcW5igzYvPirFW5eUgMdKeClGzQhd4qw+Y=
             .unwrap();
     }
 
+    #[cfg(feature = "hmac")]
     #[cfg(not(any(target_arch = "wasm32", target_arch = "wasm64")))]
     #[test]
     fn expired_token() {
