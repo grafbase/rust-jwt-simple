@@ -18,18 +18,18 @@ binstring = "0.1.1"
 ciborium = { version = "0.2.1", optional = true }
 coarsetime = "0.1.33"
 ct-codecs = "1.1.1"
-ed25519-compact = { version = "2.0.6", features = ["pem"] }
-hmac-sha1-compact = "1.1.4"
-hmac-sha256 = { version = "1.1.7", features = ["traits010"] }
-hmac-sha512 = { version = "1.1.5", features = ["traits010", "sha384"] }
-k256 = { version = "0.13.2", features = ["ecdsa", "std", "pkcs8", "pem"] }
-p256 = { version = "0.13.2", features = ["ecdsa", "std", "pkcs8", "pem"] }
-p384 = { version = "0.13.0", features = ["ecdsa", "std", "pkcs8", "pem"] }
+ed25519-compact = { version = "2.0.6", features = ["pem"], optional = true }
+hmac-sha1-compact = { version = "1.1.4", optional = true }
+hmac-sha256 = { version = "1.1.7", features = ["traits010"], optional = true }
+hmac-sha512 = { version = "1.1.5", features = ["traits010", "sha384"], optional = true }
+k256 = { version = "0.13.2", features = ["ecdsa", "std", "pkcs8", "pem"], optional = true }
+p256 = { version = "0.13.2", features = ["ecdsa", "std", "pkcs8", "pem"], optional = true }
+p384 = { version = "0.13.0", features = ["ecdsa", "std", "pkcs8", "pem"], optional = true }
 rand = "0.8.5"
 serde = { version = "1.0.193", features = ["derive"] }
 serde_json = "1.0.108"
 thiserror = "1.0.51"
-zeroize = "1.7.0"
+zeroize = { version = "1.7.0", optional = true }
 
 [target.'cfg(not(any(target_arch = "wasm32", target_arch = "wasm64")))'.dependencies]
 boring = { version = "4.2.0", optional = true }
@@ -43,10 +43,17 @@ benchmark-simple = "0.1.8"
 
 [features]
 default = ["optimal"]
+eddsa = ["ed25519-compact", "hmac"]
+es256 = ["hmac", "p256"]
+es256k = ["hmac", "k256"]
+es384 = ["hmac", "p384"]
+hmac = ["hmac-sha1-compact", "hmac-sha256", "hmac-sha512", "zeroize"]
+rsa = ["hmac", "p256"]
 cwt = ["ciborium"]
 optimal = ["boring"]
 # Note: to emulate boringssl, "default-features = false" is required in addition to "pure-rust".
 pure-rust = ["superboring"]
+
 [[bench]]
 name = "benchmark"
 harness = false
